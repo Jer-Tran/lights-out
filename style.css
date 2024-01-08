@@ -5,11 +5,10 @@
     margin: auto;
     display: flex;
 }
-/* This makes no sense why this should be the identifier and not ".row:first-of-type .tile" */
 .row:first-child .tile {
     border-top: 1px solid black;
 }
-.tile:first-of-type {
+.tile:first-child {
     border-left: 1px solid black;
 }
 .tile {
