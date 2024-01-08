@@ -1,3 +1,25 @@
 .board {
+    margin: auto;
+}
+.row {
+    margin: auto;
     display: flex;
+}
+/* This makes no sense why this should be the identifier and not ".row:first-of-type .tile" */
+.row:first-child .tile {
+    border-top: 1px solid black;
+}
+.tile:first-of-type {
+    border-left: 1px solid black;
+}
+.tile {
+    margin: -1;
+    width: calc(30em / var(--num-cols));
+    aspect-ratio: 1/1;
+    border: 1px solid black;
+    border-left: none;
+    border-top: none;
+}
+.tile[data-status="0"] {
+    background-color: lightgrey;
 }
