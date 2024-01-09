@@ -2,10 +2,10 @@ import * as LightsOut from './LightsOut.js'
 
 const ROW_LEN = 5
 const COL_LEN = ROW_LEN
+let board = null
 
 export function startGame() {
-    const board = LightsOut.createBoard(ROW_LEN , COL_LEN,2,0)
-    console.log(board)
+    board = LightsOut.createBoard(ROW_LEN , COL_LEN,2,0)
 
     const boardElem = document.querySelector('.board')
     const colours = []
@@ -15,7 +15,7 @@ export function startGame() {
 
     LightsOut.displayBoard(board, boardElem)
 
-    console.log(boardElem)
+    console.log(board)
 }
 
 startGame()
