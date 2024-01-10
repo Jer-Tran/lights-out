@@ -7,9 +7,6 @@ export function createBoard(rows, cols, states, seed) {
             const elem = document.createElement("div")
             elem.className = "tile"
 
-            // Can't figure out how to make this function work
-            // elem.onclick = console.log(5)
-
             elem.dataset.status = Math.floor(Math.random() * states)
 
             const tile = {
@@ -42,9 +39,12 @@ export function isClearable(board) {
 export function selectTile(board, tile) {
     // Band-aid solution, better it there was some verification somewhere
     if (tile != undefined && board != undefined) {
-        console.log(tile.x)
-        console.log(board)
-        toggleTile(board[tile.y][tile.x])
+        let tiles = getAdjacentTiles(board, tile)
+        console.log(tiles)
+        // toggleTile(board[tile.y][tile.x])
+        tiles.forEach(t => {
+            toggleTile(t)
+        })
     }
 }
 
@@ -54,6 +54,21 @@ function toggleTile(tile) {
     } else {
         tile.status = "0"
     }
+}
+
+function getAdjacentTiles(board, tile) {
+    const tiles = []
+    board.forEach(row => {
+        row.forEach(t => {
+            // If the coords make the cross shape (+)
+            if ( (t.x == tile.x && Math.abs(t.y - tile.y) <= 1) ||
+                 (Math.abs(t.x - tile.x) <= 1 && t.y == tile.y)) 
+            {
+                tiles.push(t)
+            }
+        })
+    })
+    return tiles
 }
 
 export function displayBoard(board, div) {
