@@ -29,10 +29,19 @@
 
             <div>
                 <!-- Player inputs the rows, cols, number of states a tile can have -->
-                <div></div>
+                <div class="input">
+                    <p>Rows: </p><input id="height-in" type="number" value="5" required>
+                    <p>Columns: </p><input id="width-in" type="number" value="5" required>
+                    <div id="input-warning">
+                        <p>Please fill out all fields</p>
+                    </div>
+                </div>
 
                 <!-- Effect is that it called a function which takes in vars -->
-                <button type="button" id="restart">Reset Button</button>
+                <div>
+                    <button type="button" id="restart">Reset Button</button>
+                </div>
+                
             </div>
         </div>
     </body>
