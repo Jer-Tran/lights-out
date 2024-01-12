@@ -1,3 +1,4 @@
+var colours = []
 
 export function createBoard(rows, cols, states, seed) {
     const board = []
@@ -40,19 +41,9 @@ export function selectTile(board, tile) {
     // Band-aid solution, better it there was some verification somewhere
     if (tile != undefined && board != undefined) {
         let tiles = getAdjacentTiles(board, tile)
-        console.log(tiles)
-        // toggleTile(board[tile.y][tile.x])
         tiles.forEach(t => {
             toggleTile(t)
         })
-    }
-}
-
-function toggleTile(tile) {
-    if (tile.status == "0") {
-        tile.status = "1"
-    } else {
-        tile.status = "0"
     }
 }
 
@@ -71,13 +62,29 @@ function getAdjacentTiles(board, tile) {
     return tiles
 }
 
-export function displayBoard(board, div) {
+function toggleTile(tile) {
+    if (tile.status == "0") {
+        tile.status = "1"
+    } else {
+        tile.status = "0"
+    }
+    adjustTileColour(tile)
+}
+
+function adjustTileColour(tile) {
+    const index = parseInt(tile.elem.dataset.status)
+    tile.elem.style.backgroundColor = colours[index]
+    // tile.elem.innerHTML = tile.elem.dataset.status // Useful debug
+}
+
+export function displayBoard(board, div, _colours) {
     // Clear board
     let child = div.lastElementChild;
     while (child) {
         div.removeChild(child);
         child = div.lastElementChild;
     }
+    colours = _colours
 
     // Display tiles
     board.forEach(row => {
@@ -89,6 +96,7 @@ export function displayBoard(board, div) {
             tile.elem.addEventListener("click", () => {
                 selectTile(board, tile)
             })
+            adjustTileColour(tile)
         })
         div.append(rowElem)
     });

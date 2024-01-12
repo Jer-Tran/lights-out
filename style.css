@@ -19,9 +19,6 @@
     border-left: none;
     border-top: none;
 }
-.tile[data-status="0"] {
-    background-color: lightgrey;
-}
 .input {
     margin: 1em;
     margin-left: 0;

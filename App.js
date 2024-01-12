@@ -11,21 +11,21 @@ export function startGame() {
         document.getElementById("input-warning").style.display = "block"
         return
     }
+    console.log(document.getElementById("color").value)
     document.getElementById("input-warning").style.display = "none"
     
     let rows = document.getElementById("height-in").valueAsNumber;
     let cols = document.getElementById("width-in").valueAsNumber;
     
-    
-    board = LightsOut.createBoard(rows, cols, 2, 0)
+    const colours = ["#c8c8c8", "#ffffff"]
+    board = LightsOut.createBoard(rows, cols, colours.length, 0)
 
     const boardElem = document.querySelector('.board')
-    const colours = []
 
     boardElem.style.setProperty("--num-cols", cols)
     boardElem.style.setProperty("--num-rows", rows)
 
-    LightsOut.displayBoard(board, boardElem)
+    LightsOut.displayBoard(board, boardElem, colours)
 
 }
 
