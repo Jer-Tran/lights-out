@@ -63,11 +63,8 @@ function getAdjacentTiles(board, tile) {
 }
 
 function toggleTile(tile) {
-    if (tile.status == "0") {
-        tile.status = "1"
-    } else {
-        tile.status = "0"
-    }
+    const states = colours.length
+    tile.status = ((parseInt(tile.status) + 1) % states).toString()
     adjustTileColour(tile)
 }
 
