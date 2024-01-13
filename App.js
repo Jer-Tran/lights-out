@@ -10,7 +10,7 @@ function createColorDiv(colour) {
     const inp = document.createElement("input")
     inp.type = 'color'
     inp.className = 'color'
-    if (typeof(colour) == String) {
+    if (typeof(colour) == "string") {
         inp.value = colour
     }
     else {
@@ -55,25 +55,24 @@ export function startGame() {
         document.getElementById("input-warning").style.display = "block"
         return
     }
-    // var col = document.getElementById("color").value
-    // console.log(parseInt(col.replace(/^#/, ''), 16))
+
     document.getElementById("input-warning").style.display = "none"
     
     const rows = document.getElementById("height-in").valueAsNumber;
     const cols = document.getElementById("width-in").valueAsNumber;
     const states = document.getElementById("states-in").valueAsNumber;
 
-    // const colours = extractColours()
-    const colours = []
-    const lerp = (x, y, a) => x * (1 - a) + y * a;
-    for (let i = 0; i < states; i++) {
-        // Very broken, I want it by default to give greyscale but some values result in weird colours
-        let val = Math.floor(lerp(DEFAULT_LIGHT, DEFAULT_DARK, i / (states - 1))).toString(16)
-        while (val.length < 6) {
-            val = "0" + val
-        }
-        colours.push("#" + val)
-    }
+    const colours = extractColours()
+    // const colours = []
+    // const lerp = (x, y, a) => x * (1 - a) + y * a;
+    // for (let i = 0; i < states; i++) {
+    //     // Very broken, I want it by default to give greyscale but some values result in weird colours
+    //     let val = Math.floor(lerp(DEFAULT_LIGHT, DEFAULT_DARK, i / (states - 1))).toString(16)
+    //     while (val.length < 6) {
+    //         val = "0" + val
+    //     }
+    //     colours.push("#" + val)
+    // }
     board = LightsOut.createBoard(rows, cols, colours.length, 0)
 
     const boardElem = document.querySelector('.board')
@@ -95,6 +94,30 @@ function showColours() {
     }
 }
 
+// https://stackoverflow.com/questions/1484506/random-color-generator
+function getRandomColor() {
+    var letters = '0123456789abcdef';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}  
+
+function remakeColourDivs() {
+    if (document.getElementById("states-in").value == "") {
+        return
+    }
+    document.getElementById("colours-div").innerHTML = ""
+    const states = document.getElementById("states-in").valueAsNumber
+    for (let i = 0; i < states; i++) {
+        // Temp for now, later change it to varying levels of greyscale HSV
+        const colour = getRandomColor()
+        const elem = createColorDiv(colour)
+        insertColorDiv(elem)
+    }
+}
+
 function prepareDefaults() {
     insertColorDiv(createColorDiv(DEFAULT_LIGHT))
     insertColorDiv(createColorDiv(DEFAULT_DARK))
@@ -104,5 +127,6 @@ prepareDefaults()
 startGame()
 
 document.getElementById("colours-div").style.display = "none" // To fix a small issue between css and applying the style here
+document.getElementById("states-in").onchange = remakeColourDivs
 document.getElementById("colours-toggle").onclick = showColours
 document.getElementById("restart").onclick = startGame;
