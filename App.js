@@ -5,6 +5,15 @@ let board = null
 const DEFAULT_DARK = 0x7f7f7f
 const DEFAULT_LIGHT = 0xffffff
 
+function extractColours() {
+    const colours = []
+    let a = document.getElementsByClassName("color")
+    for (let i = 0; i < a.length; i++) {
+        colours.push(a[i].value)
+    }
+    return colours
+}
+
 export function startGame() {
     // Do nothing if input params aren't valid
     if (document.getElementById("width-in").value == "" ||
@@ -22,7 +31,7 @@ export function startGame() {
     const cols = document.getElementById("width-in").valueAsNumber;
     const states = document.getElementById("states-in").valueAsNumber;
 
-    // const colours = ["#c8c8c8", "#ffffff"]
+    // const colours = extractColours()
     const colours = []
     const lerp = (x, y, a) => x * (1 - a) + y * a;
     for (let i = 0; i < states; i++) {
@@ -56,5 +65,7 @@ function showColours() {
 
 startGame()
 
+document.getElementById("colours-div").style.display = "none" // To fix a small issue between css and applying the style here
 document.getElementById("colours-toggle").onclick = showColours
 document.getElementById("restart").onclick = startGame;
+console.log(extractColours())
