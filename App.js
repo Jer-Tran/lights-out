@@ -5,6 +5,16 @@ let board = null
 const DEFAULT_DARK = 0x7f7f7f
 const DEFAULT_LIGHT = 0xffffff
 
+function createColorDiv(colour) {
+    const elem = document.createElement("div")
+    const inp = document.createElement("input")
+    inp.type = 'color'
+    inp.className = 'color'
+    inp.value = colour
+    elem.append(inp)
+    return elem
+}
+
 function extractColours() {
     const colours = []
     let a = document.getElementsByClassName("color")
@@ -68,4 +78,5 @@ startGame()
 document.getElementById("colours-div").style.display = "none" // To fix a small issue between css and applying the style here
 document.getElementById("colours-toggle").onclick = showColours
 document.getElementById("restart").onclick = startGame;
-console.log(extractColours())
+console.log(createColorDiv())
+// document.getElementById("colours-div").append(createColorDiv("#c7c7c7"))
