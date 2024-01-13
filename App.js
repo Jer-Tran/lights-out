@@ -10,9 +10,18 @@ function createColorDiv(colour) {
     const inp = document.createElement("input")
     inp.type = 'color'
     inp.className = 'color'
-    inp.value = colour
+    if (typeof(colour) == String) {
+        inp.value = colour
+    }
+    else {
+        inp.value = ColourHexToStr(colour)
+    }
     elem.append(inp)
     return elem
+}
+
+function insertColorDiv(div) {
+    document.getElementById("colours-div").append(div)
 }
 
 function extractColours() {
@@ -22,6 +31,19 @@ function extractColours() {
         colours.push(a[i].value)
     }
     return colours
+}
+
+function ColourStrToHex(str) {
+    return parseInt(str.replace(/^#/, ''), 16)
+}
+
+function ColourHexToStr(hex) {
+    let str = hex.toString(16)
+    // Not sure if this is correct or not in terms of how colour hexa works
+    while (str.length < 6) {
+        str = "0" + val
+    }
+    return "#" + str
 }
 
 export function startGame() {
@@ -73,10 +95,14 @@ function showColours() {
     }
 }
 
+function prepareDefaults() {
+    insertColorDiv(createColorDiv(DEFAULT_LIGHT))
+    insertColorDiv(createColorDiv(DEFAULT_DARK))
+}
+
+prepareDefaults()
 startGame()
 
 document.getElementById("colours-div").style.display = "none" // To fix a small issue between css and applying the style here
 document.getElementById("colours-toggle").onclick = showColours
 document.getElementById("restart").onclick = startGame;
-console.log(createColorDiv())
-// document.getElementById("colours-div").append(createColorDiv("#c7c7c7"))
