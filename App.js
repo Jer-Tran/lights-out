@@ -118,6 +118,19 @@ function remakeColourDivs() {
     }
 }
 
+function setTime() {
+    // https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_countdown
+    const diff = (new Date().getTime()) - startTime
+    const min = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+    const sec = Math.floor((diff % (1000 * 60)) / 1000);
+    if (sec < 10) {
+        document.getElementById("timer").firstElementChild.innerHTML = "<p>Time: " + min + ":0" + sec
+    } else {
+        document.getElementById("timer").firstElementChild.innerHTML = "<p>Time: " + min + ":" + sec
+    }
+    
+}
+
 function prepareDefaults() {
     insertColorDiv(createColorDiv(DEFAULT_LIGHT))
     insertColorDiv(createColorDiv(DEFAULT_DARK))
@@ -125,8 +138,10 @@ function prepareDefaults() {
 
 prepareDefaults()
 startGame()
+const startTime = new Date().getTime()
 
 document.getElementById("colours-div").style.display = "none" // To fix a small issue between css and applying the style here
 document.getElementById("states-in").onchange = remakeColourDivs
 document.getElementById("colours-toggle").onclick = showColours
 document.getElementById("restart").onclick = startGame;
+document.getElementById("timer-button").onclick = setTime

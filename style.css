@@ -1,3 +1,6 @@
+#game-status {
+    display: flex;
+}
 .board {
     margin: auto;
 }

@@ -14,14 +14,20 @@
         </div>
         
         <div>
-            <div id="game-status">
-                <!-- Time since started, moves done, uhh idk -->
+            <div>
+                <p>Click a tile and its adjacent tiles will change as well<br>Try to make all the tiles the same pattern</p>
             </div>
 
-            <div>
-                <p>Click a tile and its adjacent tiles will change as well</p>
-                <p>Try to make all the tiles the same pattern</p>
+            <div id="game-status">
+                <div id="timer">
+                    <p>Time: 0:00</p>
+                </div>
+                <div id="moves">
+                    <p>Moves: 0</p>
+                </div>
             </div>
+
+            <button id="timer-button">Get Time</button>
 
             <div class="board"></div>
 
