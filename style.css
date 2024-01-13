@@ -22,13 +22,12 @@
 .input {
     margin: 1em;
     margin-left: 0;
-    display: inline-flex;
-}
-input {
-    height: 100%;
-    margin: auto;
+    /* display: inline-flex; */
 }
 #input-warning {
+    display: none;
+}
+#colours-div {
     display: none;
 }
 #restart {

@@ -30,16 +30,27 @@
             <div>
                 <!-- Player inputs the rows, cols, number of states a tile can have -->
                 <div class="input">
-                    <p>Rows: </p><input id="height-in" type="number" value="5" required>
-                    <p>Columns: </p><input id="width-in" type="number" value="5" required>
-                    <p>States: </p><input id="states-in" type="number" value="2" min="2">
-                    <!-- For colour picking later -->
-                    <!-- <div id="colours-div">
-                        <input type="color" id="color" value="#c8c8c8">
-                    </div> -->
+                    <div>
+                        <p>Rows: <input id="height-in" type="number" value="5" required>
+                        Columns: <input id="width-in" type="number" value="5" required>
+                        States: <input id="states-in" type="number" value="2" min="2">
+                        <button id="colours-toggle">˅</button></p> 
+                    </div>
+
                     <div id="input-warning">
                         <p>Please fill out all fields</p>
                     </div>
+
+                    <!-- For colour picking later -->
+                    <div id="colours-div">
+                        <div>
+                            <input type="color" class="color" value="#ffffff">
+                        </div>
+                        <div>
+                            <input type="color" class="color" value="#7f7f7f">
+                        </div>
+                    </div>
+                    
                     
                 </div>
 

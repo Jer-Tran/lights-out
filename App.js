@@ -44,6 +44,17 @@ export function startGame() {
 
 }
 
+function showColours() {
+    const elem = document.getElementById("colours-div")
+    if (elem.style.display == "none") {
+        elem.style.display = "flex"
+    }
+    else {
+        elem.style.display = "none"
+    }
+}
+
 startGame()
 
+document.getElementById("colours-toggle").onclick = showColours
 document.getElementById("restart").onclick = startGame;
