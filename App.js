@@ -165,7 +165,6 @@ export function playMove(move) {
         lastMove = move
     }
     document.getElementById("moves").firstElementChild.innerHTML = "Moves: " + moves
-    console.log(LightsOut.isComplete(board))
     if (LightsOut.isComplete(board)) {
         win()
     }

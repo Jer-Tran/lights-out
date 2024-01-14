@@ -10,7 +10,8 @@ export function createBoard(rows, cols, states, seed) {
             const elem = document.createElement("div")
             elem.className = "tile"
 
-            elem.dataset.status = Math.floor(Math.random() * states)
+            // elem.dataset.status = Math.floor(Math.random() * states)
+            elem.dataset.status = "0"
 
             const tile = {
                 elem,
@@ -32,6 +33,18 @@ export function createBoard(rows, cols, states, seed) {
 }
 
 export function isComplete(board) {
+    var lastState = null
+    // forEach won't work here, as the return doesn't return for the function
+    for (let i = 0; i < board.length; i++) {
+        let row = board[i]
+        for (let j = 0; j < row.length; j++) {
+            let tile = row[j]
+            if (tile.elem.dataset.status != lastState && lastState != null) {
+                return false
+            }
+            lastState = tile.elem.dataset.status
+        }
+    }
     return true
 }
 
