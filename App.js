@@ -81,7 +81,7 @@ export function startGame() {
     boardElem.style.setProperty("--num-rows", rows)
 
     LightsOut.displayBoard(board, boardElem, colours)
-
+    resetTime()
 }
 
 function showColours() {
@@ -118,6 +118,13 @@ function remakeColourDivs() {
     }
 }
 
+function resetTime() {
+    startTime = new Date().getTime()
+    setTime() // So it automatically updates
+    clearInterval(timerInterval) // Clears old timer
+    timerInterval = setInterval(setTime, 1000)
+}
+    
 function setTime() {
     // https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_countdown
     const diff = (new Date().getTime()) - startTime
@@ -128,7 +135,10 @@ function setTime() {
     } else {
         document.getElementById("timer").firstElementChild.innerHTML = "<p>Time: " + min + ":" + sec
     }
-    
+}
+
+function win() {
+    clearInterval(timerInterval)
 }
 
 function prepareDefaults() {
@@ -136,12 +146,12 @@ function prepareDefaults() {
     insertColorDiv(createColorDiv(DEFAULT_DARK))
 }
 
+let startTime = new Date().getTime()
+let timerInterval = setInterval(setTime, 1000)
 prepareDefaults()
 startGame()
-const startTime = new Date().getTime()
 
 document.getElementById("colours-div").style.display = "none" // To fix a small issue between css and applying the style here
 document.getElementById("states-in").onchange = remakeColourDivs
 document.getElementById("colours-toggle").onclick = showColours
 document.getElementById("restart").onclick = startGame;
-document.getElementById("timer-button").onclick = setTime
