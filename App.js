@@ -148,9 +148,16 @@ function setTime() {
     }
 }
 
-export function playMove(a) {
+export function playMove(move) {
     // Check if move is repeat of the last
-    moves += 1
+    if (move == lastMove) {
+        moves -= 1
+        lastMove = null
+    }
+    else {
+        moves += 1
+        lastMove = move
+    }
     document.getElementById("moves").firstElementChild.innerHTML = "Moves: " + moves
 }
 
@@ -171,6 +178,7 @@ function prepareDefaults() {
 var startTime
 var timerInterval
 let moves = 0
+var lastMove = null
 // let startTime = new Date().getTime()
 // let timerInterval = setInterval(setTime, 1000)
 prepareDefaults()

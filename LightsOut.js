@@ -1,4 +1,4 @@
-import { playMove } from './app.js'
+import { playMove } from './App.js'
 
 var colours = []
 
@@ -39,6 +39,10 @@ export function isClearable(board) {
     return true
 }
 
+function getTilePos(tile) {
+    return tile.x + " " + tile.y
+}
+
 export function selectTile(board, tile) {
     // Band-aid solution, better it there was some verification somewhere
     if (tile != undefined && board != undefined) {
@@ -46,7 +50,7 @@ export function selectTile(board, tile) {
         tiles.forEach(t => {
             toggleTile(t)
         })
-        playMove(1)
+        playMove(getTilePos(tile))
     }
 }
 
