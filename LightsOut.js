@@ -32,7 +32,7 @@ export function createBoard(rows, cols, states, seed) {
 }
 
 export function isComplete(board) {
-    return false
+    return true
 }
 
 export function isClearable(board) {

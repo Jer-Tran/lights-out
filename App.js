@@ -57,6 +57,7 @@ export function startGame() {
     }
 
     document.getElementById("input-warning").style.display = "none"
+    document.getElementById("win").style.display = "none"
     
     const rows = document.getElementById("height-in").valueAsNumber;
     const cols = document.getElementById("width-in").valueAsNumber;
@@ -121,7 +122,7 @@ function remakeColourDivs() {
 
 // A hacky fix for a problem of intervals becoming lost
 // https://stackoverflow.com/questions/8635502/how-do-i-clear-all-intervals
-function resetTimers() {
+function stopTimers() {
     const interval_id = window.setInterval(function(){}, Number.MAX_SAFE_INTEGER);
     // Clear any timeout/interval up to that id
     for (let i = 1; i < interval_id; i++) {
@@ -130,22 +131,27 @@ function resetTimers() {
 }
 
 function resetTime() {
-    resetTimers()
+    stopTimers()
     startTime = new Date().getTime()
     setTime() // So it automatically updates
     timerInterval = setInterval(setTime, 1000)
 }
-    
+
+function getTimeStr(time) {
+    const min = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60))
+    const sec = Math.floor((time % (1000 * 60)) / 1000);
+    if (sec < 10) {
+        return min + ":0" + sec
+    } else {
+        return min + ":" + sec
+    }
+    return ""
+}
+
 function setTime() {
     // https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_countdown
     const diff = (new Date().getTime()) - startTime
-    const min = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-    const sec = Math.floor((diff % (1000 * 60)) / 1000);
-    if (sec < 10) {
-        document.getElementById("timer").firstElementChild.innerHTML = "Time: " + min + ":0" + sec
-    } else {
-        document.getElementById("timer").firstElementChild.innerHTML = "Time: " + min + ":" + sec
-    }
+    document.getElementById("timer").firstElementChild.innerHTML = "Time: " + getTimeStr(diff)
 }
 
 export function playMove(move) {
@@ -159,6 +165,13 @@ export function playMove(move) {
         lastMove = move
     }
     document.getElementById("moves").firstElementChild.innerHTML = "Moves: " + moves
+    console.log(LightsOut.isComplete(board))
+    if (LightsOut.isComplete(board)) {
+        win()
+    }
+    else {
+        document.getElementById("win").style.display = "none"
+    }
 }
 
 function resetMoves() {
@@ -166,8 +179,18 @@ function resetMoves() {
     document.getElementById("moves").firstElementChild.innerHTML = "Moves: " + moves
 }
 
+function createVictoryScreen() {
+    const elem = document.getElementById("win")
+    elem.innerHTML = ""
+    const timeDiff = (new Date().getTime()) - startTime
+    let winMessage = "Congratulations! Beaten in " + getTimeStr(timeDiff) + " using " + moves + " moves"
+    elem.append(winMessage)
+}
+
 function win() {
-    resetTimers()
+    stopTimers()
+    createVictoryScreen()
+    document.getElementById("win").style.display = "block"
 }
 
 function prepareDefaults() {
@@ -185,6 +208,7 @@ prepareDefaults()
 startGame()
 
 document.getElementById("colours-div").style.display = "none" // To fix a small issue between css and applying the style here
+document.getElementById("win").style.display = "none"
 document.getElementById("states-in").onchange = remakeColourDivs
 document.getElementById("colours-toggle").onclick = showColours
 document.getElementById("restart").onclick = startGame;
