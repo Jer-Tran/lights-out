@@ -119,10 +119,20 @@ function remakeColourDivs() {
     }
 }
 
+// A hacky fix for a problem of intervals becoming lost
+// https://stackoverflow.com/questions/8635502/how-do-i-clear-all-intervals
+function resetTimers() {
+    const interval_id = window.setInterval(function(){}, Number.MAX_SAFE_INTEGER);
+    // Clear any timeout/interval up to that id
+    for (let i = 1; i < interval_id; i++) {
+    window.clearInterval(i);
+    }
+}
+
 function resetTime() {
+    resetTimers()
     startTime = new Date().getTime()
     setTime() // So it automatically updates
-    clearInterval(timerInterval) // Clears old timer
     timerInterval = setInterval(setTime, 1000)
 }
     
@@ -150,7 +160,7 @@ function resetMoves() {
 }
 
 function win() {
-    clearInterval(timerInterval)
+    resetTimers()
 }
 
 function prepareDefaults() {
