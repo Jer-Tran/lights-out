@@ -82,6 +82,7 @@ export function startGame() {
 
     LightsOut.displayBoard(board, boardElem, colours)
     resetTime()
+    resetMoves()
 }
 
 function showColours() {
@@ -131,10 +132,21 @@ function setTime() {
     const min = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
     const sec = Math.floor((diff % (1000 * 60)) / 1000);
     if (sec < 10) {
-        document.getElementById("timer").firstElementChild.innerHTML = "<p>Time: " + min + ":0" + sec
+        document.getElementById("timer").firstElementChild.innerHTML = "Time: " + min + ":0" + sec
     } else {
-        document.getElementById("timer").firstElementChild.innerHTML = "<p>Time: " + min + ":" + sec
+        document.getElementById("timer").firstElementChild.innerHTML = "Time: " + min + ":" + sec
     }
+}
+
+export function playMove(a) {
+    // Check if move is repeat of the last
+    moves += 1
+    document.getElementById("moves").firstElementChild.innerHTML = "Moves: " + moves
+}
+
+function resetMoves() {
+    moves = 0
+    document.getElementById("moves").firstElementChild.innerHTML = "Moves: " + moves
 }
 
 function win() {
@@ -146,8 +158,11 @@ function prepareDefaults() {
     insertColorDiv(createColorDiv(DEFAULT_DARK))
 }
 
-let startTime = new Date().getTime()
-let timerInterval = setInterval(setTime, 1000)
+var startTime
+var timerInterval
+let moves = 0
+// let startTime = new Date().getTime()
+// let timerInterval = setInterval(setTime, 1000)
 prepareDefaults()
 startGame()
 

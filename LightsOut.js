@@ -1,3 +1,5 @@
+import { playMove } from './app.js'
+
 var colours = []
 
 export function createBoard(rows, cols, states, seed) {
@@ -44,6 +46,7 @@ export function selectTile(board, tile) {
         tiles.forEach(t => {
             toggleTile(t)
         })
+        playMove(1)
     }
 }
 
