@@ -10,8 +10,7 @@ export function createBoard(rows, cols, states, seed) {
             const elem = document.createElement("div")
             elem.className = "tile"
 
-            // elem.dataset.status = Math.floor(Math.random() * states)
-            elem.dataset.status = "0"
+            elem.dataset.status = Math.floor(Math.random() * states)
 
             const tile = {
                 elem,
