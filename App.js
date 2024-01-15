@@ -1,9 +1,39 @@
 import * as LightsOut from './LightsOut.js'
 
 const DEFAULT_LEN = 5
-let board = null
-const DEFAULT_DARK = 0x7f7f7f
+const DEFAULT_DARK = 0x2e2e2e
 const DEFAULT_LIGHT = 0xffffff
+
+
+function ColourStrToHex(str) {
+    return parseInt(str.replace(/^#/, ''), 16)
+}
+
+function ColourHexToStr(hex) {
+    let str = hex.toString(16)
+    // Not sure if this is correct or not in terms of how colour hexa works
+    while (str.length < 6) {
+        str = "0" + str
+    }
+    return "#" + str
+}
+
+// Takes in hexadecimal values
+function interpColour(low, high, alpha) {
+    const r1 = low >> 16
+    const r2 = high >> 16
+    const g1 = (low & 0xff00) >> 8
+    const g2 = (high & 0xff00) >> 8
+    const b1 = low & 0xff
+    const b2 = high & 0xff
+
+    const r3 = r1 * (1 - alpha) + r2 * alpha
+    const g3 = g1 * (1 - alpha) + g2 * alpha
+    const b3 = b1 * (1 - alpha) + b2 * alpha
+
+    const res = r3 << 16 | g3 << 8 | b3
+    return res
+}
 
 function createColorDiv(colour) {
     const elem = document.createElement("div")
@@ -33,49 +63,6 @@ function extractColours() {
     return colours
 }
 
-function ColourStrToHex(str) {
-    return parseInt(str.replace(/^#/, ''), 16)
-}
-
-function ColourHexToStr(hex) {
-    let str = hex.toString(16)
-    // Not sure if this is correct or not in terms of how colour hexa works
-    while (str.length < 6) {
-        str = "0" + val
-    }
-    return "#" + str
-}
-
-export function startGame() {
-    // Do nothing if input params aren't valid
-    if (document.getElementById("width-in").value == "" ||
-        document.getElementById("height-in").value == ""||
-        document.getElementById("states-in").value == "") {
-        console.log("invalid input")
-        document.getElementById("input-warning").style.display = "block"
-        return
-    }
-
-    document.getElementById("input-warning").style.display = "none"
-    document.getElementById("win").style.display = "none"
-    
-    const rows = document.getElementById("height-in").valueAsNumber;
-    const cols = document.getElementById("width-in").valueAsNumber;
-    const states = document.getElementById("states-in").valueAsNumber;
-
-    const colours = extractColours()
-    board = LightsOut.createBoard(rows, cols, colours.length, 0)
-
-    const boardElem = document.querySelector('.board')
-
-    boardElem.style.setProperty("--num-cols", cols)
-    boardElem.style.setProperty("--num-rows", rows)
-
-    LightsOut.displayBoard(board, boardElem, colours)
-    resetTime()
-    resetMoves()
-}
-
 function showColours() {
     const elem = document.getElementById("colours-div")
     if (elem.style.display == "none") {
@@ -86,29 +73,13 @@ function showColours() {
     }
 }
 
-// Takes in hexadecimal values
-function interpColour(low, high, alpha) {
-    const r1 = low >> 16
-    const r2 = high >> 16
-    const g1 = (low & 0xff00) >> 8
-    const g2 = (high & 0xff00) >> 8
-    const b1 = low & 0xff
-    const b2 = high & 0xff
-
-    const r3 = r1 * (1 - alpha) + r2 * alpha
-    const g3 = g1 * (1 - alpha) + g2 * alpha
-    const b3 = b1 * (1 - alpha) + b2 * alpha
-
-    const res = r3 << 16 | g3 << 8 | b3
-    return res
-}
-
 function remakeColourDivs() {
     if (document.getElementById("states-in").value == "") {
         return
     }
     document.getElementById("colours-div").innerHTML = ""
     const states = document.getElementById("states-in").valueAsNumber
+    console.log(states)
     for (let i = 0; i < states; i++) {
         const alpha = i / (states - 1)
         const colour = interpColour(DEFAULT_LIGHT, DEFAULT_DARK, alpha)
@@ -175,6 +146,36 @@ function resetMoves() {
     document.getElementById("moves").firstElementChild.innerHTML = "Moves: " + moves
 }
 
+function startGame() {
+    // Do nothing if input params aren't valid
+    if (document.getElementById("width-in").value == "" ||
+        document.getElementById("height-in").value == ""||
+        document.getElementById("states-in").value == "") {
+        console.log("invalid input")
+        document.getElementById("input-warning").style.display = "block"
+        return
+    }
+
+    document.getElementById("input-warning").style.display = "none"
+    document.getElementById("win").style.display = "none"
+    
+    const rows = document.getElementById("height-in").valueAsNumber;
+    const cols = document.getElementById("width-in").valueAsNumber;
+    const states = document.getElementById("states-in").valueAsNumber;
+
+    const colours = extractColours()
+    board = LightsOut.createBoard(rows, cols, colours.length, 0)
+
+    const boardElem = document.querySelector('.board')
+
+    boardElem.style.setProperty("--num-cols", cols)
+    boardElem.style.setProperty("--num-rows", rows)
+
+    LightsOut.displayBoard(board, boardElem, colours)
+    resetTime()
+    resetMoves()
+}
+
 function createVictoryScreen() {
     const elem = document.getElementById("win")
     elem.innerHTML = ""
@@ -189,18 +190,13 @@ function win() {
     document.getElementById("win").style.display = "block"
 }
 
-function prepareDefaults() {
-    insertColorDiv(createColorDiv(DEFAULT_LIGHT))
-    insertColorDiv(createColorDiv(DEFAULT_DARK))
-}
-
+let board = null
 var startTime
 var timerInterval
 let moves = 0
 var lastMove = null
-// let startTime = new Date().getTime()
-// let timerInterval = setInterval(setTime, 1000)
-prepareDefaults()
+// prepareDefaults()
+remakeColourDivs()
 startGame()
 
 document.getElementById("colours-div").style.display = "none" // To fix a small issue between css and applying the style here
@@ -208,4 +204,3 @@ document.getElementById("win").style.display = "none"
 document.getElementById("states-in").onchange = remakeColourDivs
 document.getElementById("colours-toggle").onclick = showColours
 document.getElementById("restart").onclick = startGame;
-interpColour(DEFAULT_LIGHT, DEFAULT_DARK, 0.5)

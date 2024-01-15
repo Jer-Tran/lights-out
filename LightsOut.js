@@ -55,17 +55,6 @@ function getTilePos(tile) {
     return tile.x + " " + tile.y
 }
 
-export function selectTile(board, tile) {
-    // Band-aid solution, better it there was some verification somewhere
-    if (tile != undefined && board != undefined) {
-        let tiles = getAdjacentTiles(board, tile)
-        tiles.forEach(t => {
-            toggleTile(t)
-        })
-        playMove(getTilePos(tile))
-    }
-}
-
 function getAdjacentTiles(board, tile) {
     const tiles = []
     board.forEach(row => {
@@ -91,6 +80,17 @@ function adjustTileColour(tile) {
     const index = parseInt(tile.elem.dataset.status)
     tile.elem.style.backgroundColor = colours[index]
     // tile.elem.innerHTML = tile.elem.dataset.status // Useful debug
+}
+
+export function selectTile(board, tile) {
+    // Band-aid solution, better it there was some verification somewhere
+    if (tile != undefined && board != undefined) {
+        let tiles = getAdjacentTiles(board, tile)
+        tiles.forEach(t => {
+            toggleTile(t)
+        })
+        playMove(getTilePos(tile))
+    }
 }
 
 export function displayBoard(board, div, _colours) {
