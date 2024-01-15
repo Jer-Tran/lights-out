@@ -64,16 +64,6 @@ export function startGame() {
     const states = document.getElementById("states-in").valueAsNumber;
 
     const colours = extractColours()
-    // const colours = []
-    // const lerp = (x, y, a) => x * (1 - a) + y * a;
-    // for (let i = 0; i < states; i++) {
-    //     // Very broken, I want it by default to give greyscale but some values result in weird colours
-    //     let val = Math.floor(lerp(DEFAULT_LIGHT, DEFAULT_DARK, i / (states - 1))).toString(16)
-    //     while (val.length < 6) {
-    //         val = "0" + val
-    //     }
-    //     colours.push("#" + val)
-    // }
     board = LightsOut.createBoard(rows, cols, colours.length, 0)
 
     const boardElem = document.querySelector('.board')
@@ -96,15 +86,22 @@ function showColours() {
     }
 }
 
-// https://stackoverflow.com/questions/1484506/random-color-generator
-function getRandomColor() {
-    var letters = '0123456789abcdef';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}  
+// Takes in hexadecimal values
+function interpColour(low, high, alpha) {
+    const r1 = low >> 16
+    const r2 = high >> 16
+    const g1 = (low & 0xff00) >> 8
+    const g2 = (high & 0xff00) >> 8
+    const b1 = low & 0xff
+    const b2 = high & 0xff
+
+    const r3 = r1 * (1 - alpha) + r2 * alpha
+    const g3 = g1 * (1 - alpha) + g2 * alpha
+    const b3 = b1 * (1 - alpha) + b2 * alpha
+
+    const res = r3 << 16 | g3 << 8 | b3
+    return res
+}
 
 function remakeColourDivs() {
     if (document.getElementById("states-in").value == "") {
@@ -113,8 +110,8 @@ function remakeColourDivs() {
     document.getElementById("colours-div").innerHTML = ""
     const states = document.getElementById("states-in").valueAsNumber
     for (let i = 0; i < states; i++) {
-        // Temp for now, later change it to varying levels of greyscale HSV
-        const colour = getRandomColor()
+        const alpha = i / (states - 1)
+        const colour = interpColour(DEFAULT_LIGHT, DEFAULT_DARK, alpha)
         const elem = createColorDiv(colour)
         insertColorDiv(elem)
     }
@@ -211,3 +208,4 @@ document.getElementById("win").style.display = "none"
 document.getElementById("states-in").onchange = remakeColourDivs
 document.getElementById("colours-toggle").onclick = showColours
 document.getElementById("restart").onclick = startGame;
+interpColour(DEFAULT_LIGHT, DEFAULT_DARK, 0.5)
